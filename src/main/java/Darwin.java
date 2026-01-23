@@ -22,7 +22,11 @@ public class Darwin {
                 break;
             }
 
-            processCommand(input);
+            try{
+                processCommand(input);
+            } catch (DarwinException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
         }
 
         scanner.close();
@@ -43,7 +47,7 @@ public class Darwin {
         return input.equalsIgnoreCase("bye");
     }
 
-    private static void processCommand(String input) {
+    private static void processCommand(String input) throws DarwinException {
         System.out.println("____________________________________________________________");
 
         if (input.equalsIgnoreCase("list")) {
@@ -59,7 +63,8 @@ public class Darwin {
         } else if (input.startsWith("event ")) {
             addEvent(input);
         } else {
-            System.out.println(" Unknown command. Please use: todo, deadline, event, list, mark, unmark, or bye");
+            throw new DarwinException(" Unknown command :( Please use: todo, deadline, event, list, mark, unmark, " +
+                    "or bye");
         }
 
         System.out.println("____________________________________________________________");
@@ -76,95 +81,88 @@ public class Darwin {
         }
     }
 
-    private static void addTodo(String input) {
+    private static void addTodo(String input) throws DarwinException {
         if (input.length() <= 5) {
-            System.out.println(" OOPS!!! The description of a todo cannot be empty.");
-            return;
+            throw new DarwinException(" Please use this format 'todo <description>'!");
         }
 
         String description = input.substring(5).trim();
         if (description.isEmpty()) {
-            System.out.println(" OOPS!!! The description of a todo cannot be empty.");
-            return;
+            throw new DarwinException(" Description is empty! Please use this format 'todo <description>'!");
         }
 
-        if (taskCount < MAX_TASKS) {
-            tasks[taskCount] = new ToDo(description);
-            taskCount++;
-            printTaskAddedMessage(tasks[taskCount - 1]);
-        } else {
-            System.out.println(" Task list is full! Cannot add more tasks.");
+        if (taskCount >= MAX_TASKS) {
+            throw new DarwinException(" Task list is full! Cannot add more tasks.");
         }
+
+        tasks[taskCount] = new ToDo(description);
+        taskCount++;
+        printTaskAddedMessage(tasks[taskCount - 1]);
     }
 
-    private static void addDeadline(String input) {
+    private static void addDeadline(String input) throws DarwinException {
         if (input.length() <= 9) {
-            System.out.println(" OOPS!!! The description of a deadline cannot be empty.");
-            return;
+            throw new DarwinException(" Please use this format 'deadline <description> /by <deadline>'!");
         }
 
         String remaining = input.substring(9).trim();
         String[] parts = remaining.split(" /by ", 2);
 
         if (parts.length < 2) {
-            System.out.println(" OOPS!!! Please use the format: deadline <description> /by <time>");
-            return;
+            throw new DarwinException(" Please use this format 'deadline <description> /by <deadline>'!");
         }
 
         String description = parts[0].trim();
         String by = parts[1].trim();
 
         if (description.isEmpty() || by.isEmpty()) {
-            System.out.println(" OOPS!!! The description and deadline time cannot be empty.");
-            return;
+            throw new DarwinException(" Description and/or deadline is empty. Please use this format 'deadline " +
+                    "<description> /by <deadline>'!");
         }
 
-        if (taskCount < MAX_TASKS) {
-            tasks[taskCount] = new Deadline(description, by);
-            taskCount++;
-            printTaskAddedMessage(tasks[taskCount - 1]);
-        } else {
-            System.out.println(" Task list is full! Cannot add more tasks.");
+        if (taskCount >= MAX_TASKS) {
+            throw new DarwinException(" Task list is full! Cannot add more tasks.");
         }
+
+        tasks[taskCount] = new Deadline(description, by);
+        taskCount++;
+        printTaskAddedMessage(tasks[taskCount - 1]);
     }
 
-    private static void addEvent(String input) {
+    private static void addEvent(String input) throws DarwinException {
         if (input.length() <= 6) {
-            System.out.println(" OOPS!!! The description of a event cannot be empty.");
-            return;
+            throw new DarwinException(" Please use this format: event <description> /from <start> /to <end>!");
         }
 
         String remaining = input.substring(6).trim();
         String[] parts = remaining.split(" /from ", 2);
 
         if (parts.length < 2) {
-            System.out.println(" OOPS!!! Please use the format: event <description> /from <start> /to <end>");
-            return;
+            throw new DarwinException(" Please use this format: event <description> /from <start> /to <end>!");
         }
 
         String description = parts[0].trim();
         String[] timeParts = parts[1].split(" /to ", 2);
 
         if (timeParts.length < 2) {
-            System.out.println(" OOPS!!! Please use the format: event <description> /from <start> /to <end>");
-            return;
+            throw new DarwinException(" Please use this format: event <description> /from <start> /to <end>!");
         }
 
         String from = timeParts[0].trim();
         String to = timeParts[1].trim();
 
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            System.out.println(" OOPS!!! The description, start time, and end time cannot be empty.");
-            return;
+            throw new DarwinException(" The description, start time, and/or end time is empty. Please use this " +
+                    "format: event <description> /from <start> /to <end>!");
         }
 
-        if (taskCount < MAX_TASKS) {
-            tasks[taskCount] = new Event(description, from, to);
-            taskCount++;
-            printTaskAddedMessage(tasks[taskCount - 1]);
-        } else {
-            System.out.println(" Task list is full! Cannot add more tasks.");
+        if (taskCount >= MAX_TASKS) {
+            throw new DarwinException(" Task list is full! Cannot add more tasks.");
         }
+
+        tasks[taskCount] = new Event(description, from, to);
+        taskCount++;
+        printTaskAddedMessage(tasks[taskCount - 1]);
     }
 
     private static void printTaskAddedMessage(Task task) {
@@ -173,47 +171,48 @@ public class Darwin {
         System.out.println(" Now you have " + taskCount + " tasks in the list.");
     }
 
-    private static void markTask(String input) {
+    private static void markTask(String input) throws DarwinException {
         try {
             String[] parts = input.split("\\s+");
-            if (parts.length >= 2) {
-                int taskNumber = Integer.parseInt(parts[1]);
-                if(isValidTaskNumber(taskNumber)) {
-                    tasks[taskNumber - 1].markAsDone();
-                    System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + tasks[taskNumber - 1]);
-                } else {
-                    // checks for valid task number - failed case
-                    System.out.println(" Invalid task number.");
-                }
-            } else {
-                // less than 2 parts in "parts"
-                System.out.println(" Please specify a task number.");
+
+            if (parts.length < 2) {
+                throw new DarwinException(" Please specify a task number.");
             }
+
+            int taskNumber = Integer.parseInt(parts[1]);
+
+            if(!isValidTaskNumber(taskNumber)) {
+                throw new DarwinException(" Invalid task number.");
+            }
+
+            tasks[taskNumber - 1].markAsDone();
+            System.out.println(" Nice! I've marked this task as done:");
+            System.out.println("   " + tasks[taskNumber - 1]);
+
         } catch (NumberFormatException e) {
-            System.out.println(" Please provide a valid task number after 'mark'.");
+            throw new DarwinException(" Please provide a valid task number after 'mark'.");
         }
     }
 
-    private static void unmarkTask(String input) {
+    private static void unmarkTask(String input) throws DarwinException {
         try {
             String[] parts = input.split("\\s+");
-            if (parts.length >= 2) {
-                int taskNumber = Integer.parseInt(parts[1]);
-                if(isValidTaskNumber(taskNumber)) {
-                    tasks[taskNumber - 1].markAsNotDone();
-                    System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + tasks[taskNumber - 1]);
-                } else {
-                    // checks for valid task number - failed case
-                    System.out.println(" Invalid task number.");
-                }
-            } else {
-                // less than 2 parts in "parts"
-                System.out.println(" Please specify a task number.");
+            if (parts.length < 2) {
+                throw new DarwinException(" Please specify a task number.");
             }
+
+            int taskNumber = Integer.parseInt(parts[1]);
+
+            if (!isValidTaskNumber(taskNumber)) {
+                throw new DarwinException(" Invalid task number.");
+            }
+
+            tasks[taskNumber - 1].markAsNotDone();
+            System.out.println(" OK, I've marked this task as not done yet:");
+            System.out.println("   " + tasks[taskNumber - 1]);
+
         } catch (NumberFormatException e) {
-            System.out.println(" Please provide a valid task number after 'mark'.");
+            throw new DarwinException(" Please provide a valid task number after 'unmark'.");
         }
     }
 
