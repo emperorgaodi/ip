@@ -1,10 +1,23 @@
 todo read book
 deadline return book /by Sunday
 event team meeting /from 2pm /to 4pm
+todo buy groceries
+deadline submit report /by Friday 5pm
 list
 mark 1
+mark 3
 list
-mark 2
+delete 2
+list
+delete 5
+delete abc
+mark 10
 unmark 1
+list
+delete 1
+event workshop
+event workshop /from 10am
+event workshop /from 10am /to
+event coding workshop /from 9am /to 5pm
 list
 bye

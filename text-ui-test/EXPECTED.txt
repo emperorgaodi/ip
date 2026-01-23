@@ -18,26 +18,59 @@ ____________________________________________________________
  Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
- 1.[T][ ] read book
- 2.[D][ ] return book (by: Sunday)
- 3.[E][ ] team meeting (from: 2pm to: 4pm)
+ Got it. I've added this task:
+   [T][ ] buy groceries
+ Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [D][ ] submit report (by: Friday 5pm)
+ Now you have 5 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] read book
  2.[D][ ] return book (by: Sunday)
  3.[E][ ] team meeting (from: 2pm to: 4pm)
+ 4.[T][ ] buy groceries
+ 5.[D][ ] submit report (by: Friday 5pm)
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [T][X] read book
+____________________________________________________________
+____________________________________________________________
+ Nice! I've marked this task as done:
+   [E][X] team meeting (from: 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] read book
  2.[D][ ] return book (by: Sunday)
- 3.[E][ ] team meeting (from: 2pm to: 4pm)
+ 3.[E][X] team meeting (from: 2pm to: 4pm)
+ 4.[T][ ] buy groceries
+ 5.[D][ ] submit report (by: Friday 5pm)
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
-   [D][X] return book (by: Sunday)
+ Noted. I've removed this task:
+   [D][ ] return book (by: Sunday)
+ Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[T][X] read book
+ 2.[E][X] team meeting (from: 2pm to: 4pm)
+ 3.[T][ ] buy groceries
+ 4.[D][ ] submit report (by: Friday 5pm)
+____________________________________________________________
+____________________________________________________________
+Error:  Invalid task number.
+____________________________________________________________
+____________________________________________________________
+Error:  Please provide a valid task number after 'delete'.
+____________________________________________________________
+____________________________________________________________
+Error:  Invalid task number.
 ____________________________________________________________
 ____________________________________________________________
  OK, I've marked this task as not done yet:
@@ -46,8 +79,35 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] read book
- 2.[D][X] return book (by: Sunday)
- 3.[E][ ] team meeting (from: 2pm to: 4pm)
+ 2.[E][X] team meeting (from: 2pm to: 4pm)
+ 3.[T][ ] buy groceries
+ 4.[D][ ] submit report (by: Friday 5pm)
+____________________________________________________________
+____________________________________________________________
+ Noted. I've removed this task:
+   [T][ ] read book
+ Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Error:  Please use this format: event <description> /from <start> /to <end>!
+____________________________________________________________
+____________________________________________________________
+Error:  Please use this format: event <description> /from <start> /to <end>!
+____________________________________________________________
+____________________________________________________________
+Error:  Please use this format: event <description> /from <start> /to <end>!
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [E][ ] coding workshop (from: 9am to: 5pm)
+ Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Here are the tasks in your list:
+ 1.[E][X] team meeting (from: 2pm to: 4pm)
+ 2.[T][ ] buy groceries
+ 3.[D][ ] submit report (by: Friday 5pm)
+ 4.[E][ ] coding workshop (from: 9am to: 5pm)
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
