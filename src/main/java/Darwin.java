@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.font.NumericShaper;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -5,8 +6,16 @@ import java.util.ArrayList;
 public class Darwin {
     private static final int MAX_TASKS = 100;
     private static ArrayList<Task> tasks = new ArrayList<>();
+    private static Storage storage;
+
+    private static final String horizontal_line = "____________________________________________________________";
+    private static final String FILE_PATH = "./data/darwin.txt";
 
     public static void main(String[] args) {
+        // initialise storage and load tasks
+        storage = new Storage(FILE_PATH);
+        tasks = storage.loadTasks(); // load tasks from file
+
         runChatBot();
     }
 
@@ -25,6 +34,7 @@ public class Darwin {
 
             try{
                 processCommand(input);
+                storage.saveTasks(tasks);
             } catch (DarwinException e) {
                 System.out.println("Error: " + e.getMessage());
             }
@@ -34,10 +44,10 @@ public class Darwin {
     }
 
     private static void showGreeting() {
-        System.out.println("____________________________________________________________");
+        System.out.println(horizontal_line);
         System.out.println(" Hello! I'm Darwin");
         System.out.println(" What can I do for you?");
-        System.out.println("____________________________________________________________");
+        System.out.println(horizontal_line);
     }
 
     private static String getUserInput(Scanner scanner) {
@@ -49,7 +59,7 @@ public class Darwin {
     }
 
     private static void processCommand(String input) throws DarwinException {
-        System.out.println("____________________________________________________________");
+        System.out.println(horizontal_line);
 
         if (input.equalsIgnoreCase("list")) {
             showTasklist();
@@ -70,7 +80,7 @@ public class Darwin {
                     "delete or bye");
         }
 
-        System.out.println("____________________________________________________________");
+        System.out.println(horizontal_line);
     }
 
     private static void showTasklist() {
@@ -245,8 +255,8 @@ public class Darwin {
     }
 
     private static void showGoodbye() {
-        System.out.println("____________________________________________________________");
+        System.out.println(horizontal_line);
         System.out.println(" Bye. Hope to see you again soon!");
-        System.out.println("____________________________________________________________");
+        System.out.println(horizontal_line);
     }
 }
