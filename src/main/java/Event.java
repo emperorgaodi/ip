@@ -1,21 +1,26 @@
+import java.time.LocalDate;
+
 public class Event extends Task {
 
-    protected String from;
-    protected String to;
+    protected LocalDate fromDate;
+    protected LocalDate toDate;
 
-    public Event(String description, String from, String to) {
+    public Event(String description, String from, String to) throws DarwinException {
         super(description);
-        this.from = from;
-        this.to = to;
+        this.fromDate = DateParser.parseDate(from);
+        this.toDate = DateParser.parseDate(to);
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        String fromDisplay = DateParser.formatDateForDisplay(fromDate);
+        String toDisplay = DateParser.formatDateForDisplay(toDate);
+        return "[E]" + super.toString() + " (from: " + fromDisplay + " to: " + toDisplay + ")";
     }
 
     @Override
     public String toFileFormat() {
-        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + from + " | " + to;
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + fromDate.toString() + " | "
+                + toDate.toString();
     }
 }

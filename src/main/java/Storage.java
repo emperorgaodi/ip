@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -64,6 +63,7 @@ public class Storage {
             String[] parts = line.split("\\|");
 
             if (parts.length < 3) {
+                System.out.println("Warning: Skipping invalid line: " + line);
                 return null; // skip invalid lines
             }
 
@@ -71,15 +71,7 @@ public class Storage {
             boolean isDone = parts[1].equals("1");
             String description = parts[2];
 
-            Task task = null;
-
-            if (type.equals("T") && parts.length == 3) {
-                task = new ToDo(description);
-            } else if (type.equals("D") && parts.length == 4) {
-                task = new Deadline(description, parts[3]);
-            } else if (type.equals("E") && parts.length == 5) {
-                task = new Event(description, parts[3], parts[4]);
-            }
+            Task task = parseTaskByType(type, parts, description);
 
             if (task != null && isDone) {
                 task.markAsDone();
@@ -87,8 +79,51 @@ public class Storage {
 
             return task;
 
+        } catch (DarwinException e) {
+            System.out.println("Warning: Skipping task - " + e.getMessage());
+            return null;
         } catch (Exception e) {
-            return null; // if anything goes wrong, skip this line
+            System.out.println("Warning: Skipping invalid line");
+            return null;
         }
+    }
+
+    private Task parseTaskByType(String type, String[] parts, String description) throws DarwinException {
+        switch (type) {
+            case "T":
+                return parseTodoLine(parts, description);
+            case "D":
+                return parseDeadlineLine(parts, description);
+            case "E":
+                return parseEventLine(parts, description);
+            default:
+                throw new DarwinException("Unknown task type in file: " + type);
+        }
+    }
+
+    private Task parseTodoLine(String[] parts, String description) throws DarwinException {
+        if (parts.length != 3) {
+            throw new DarwinException("Invalid todo format in file");
+        }
+        return new ToDo(description);
+    }
+
+    private Task parseDeadlineLine(String[] parts, String description) throws DarwinException {
+        if (parts.length != 4) {
+            throw new DarwinException("Invalid deadline format in file");
+        }
+
+        String dateString = parts[3].trim();
+        return new Deadline(description, dateString); // Will throw if date invalid
+    }
+
+    private Task parseEventLine(String[] parts, String description) throws DarwinException {
+        if (parts.length != 5) {
+            throw new DarwinException("Invalid event format in file");
+        }
+
+        String from = parts[3].trim();
+        String to = parts[4].trim();
+        return new Event(description, from, to); // Will throw if dates invalid
     }
 }

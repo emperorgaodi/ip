@@ -114,14 +114,14 @@ public class Darwin {
 
     private static void addDeadline(String input) throws DarwinException {
         if (input.length() <= 9) {
-            throw new DarwinException(" Please use this format 'deadline <description> /by <deadline>'!");
+            throw new DarwinException(" Please use this format 'deadline <description> /by yyyy-mm-dd'!");
         }
 
         String remaining = input.substring(9).trim();
         String[] parts = remaining.split(" /by ", 2);
 
         if (parts.length < 2) {
-            throw new DarwinException(" Please use this format 'deadline <description> /by <deadline>'!");
+            throw new DarwinException(" Please use this format 'deadline <description> /by yyyy-mm-dd'!");
         }
 
         String description = parts[0].trim();
@@ -129,7 +129,7 @@ public class Darwin {
 
         if (description.isEmpty() || by.isEmpty()) {
             throw new DarwinException(" Description and/or deadline is empty. Please use this format 'deadline " +
-                    "<description> /by <deadline>'!");
+                    "<description> /by yyyy-mm-dd'!");
         }
 
         if (tasks.size() >= MAX_TASKS) {
@@ -142,21 +142,21 @@ public class Darwin {
 
     private static void addEvent(String input) throws DarwinException {
         if (input.length() <= 6) {
-            throw new DarwinException(" Please use this format: event <description> /from <start> /to <end>!");
+            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd /to yyyy-mm-dd!");
         }
 
         String remaining = input.substring(6).trim();
         String[] parts = remaining.split(" /from ", 2);
 
         if (parts.length < 2) {
-            throw new DarwinException(" Please use this format: event <description> /from <start> /to <end>!");
+            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd /to yyyy-mm-dd!");
         }
 
         String description = parts[0].trim();
         String[] timeParts = parts[1].split(" /to ", 2);
 
         if (timeParts.length < 2) {
-            throw new DarwinException(" Please use this format: event <description> /from <start> /to <end>!");
+            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd /to yyyy-mm-dd!");
         }
 
         String from = timeParts[0].trim();
@@ -164,7 +164,7 @@ public class Darwin {
 
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
             throw new DarwinException(" The description, start time, and/or end time is empty. Please use this " +
-                    "format: event <description> /from <start> /to <end>!");
+                    "format: event <description> /from yyyy-mm-dd /to yyyy-mm-dd!");
         }
 
         if (tasks.size() >= MAX_TASKS) {
