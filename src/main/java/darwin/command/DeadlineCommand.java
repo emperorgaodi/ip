@@ -1,3 +1,12 @@
+package darwin.command;
+
+import darwin.DarwinException;
+import darwin.storage.Storage;
+import darwin.task.Deadline;
+import darwin.task.Task;
+import darwin.task.TaskList;
+import darwin.ui.Ui;
+
 public class DeadlineCommand extends Command {
     private final String description;
     private final String by;

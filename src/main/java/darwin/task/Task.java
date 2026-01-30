@@ -1,4 +1,6 @@
-class Task {
+package darwin.task;
+
+public class Task {
     protected String description;
     protected boolean isDone;
 
@@ -8,7 +10,7 @@ class Task {
     }
 
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone ? "X" : " "); // mark done darwin.task with X
     }
 
     public void markAsDone() {

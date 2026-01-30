@@ -1,3 +1,11 @@
+package darwin.storage;
+
+import darwin.DarwinException;
+import darwin.task.Deadline;
+import darwin.task.Event;
+import darwin.task.Task;
+import darwin.task.ToDo;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -57,7 +65,7 @@ public class Storage {
         }
     }
 
-    // parse line from file into Task object
+    // parse line from file into darwin.task.Task object
     private Task parseLine(String line) {
         try {
             String[] parts = line.split("\\|");
@@ -80,7 +88,7 @@ public class Storage {
             return task;
 
         } catch (DarwinException e) {
-            System.out.println("Warning: Skipping task - " + e.getMessage());
+            System.out.println("Warning: Skipping darwin.task - " + e.getMessage());
             return null;
         } catch (Exception e) {
             System.out.println("Warning: Skipping invalid line");
@@ -97,7 +105,7 @@ public class Storage {
             case "E":
                 return parseEventLine(parts, description);
             default:
-                throw new DarwinException("Unknown task type in file: " + type);
+                throw new DarwinException("Unknown darwin.task type in file: " + type);
         }
     }
 
