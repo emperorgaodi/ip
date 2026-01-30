@@ -1,3 +1,11 @@
+package darwin;
+
+import darwin.command.Command;
+import darwin.parser.Parser;
+import darwin.storage.Storage;
+import darwin.task.TaskList;
+import darwin.ui.Ui;
+
 public class Darwin {
     private static final String FILE_PATH = "./data/darwin.txt";
     private final Storage storage;
