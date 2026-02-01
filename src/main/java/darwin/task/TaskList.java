@@ -9,6 +9,7 @@ import darwin.DarwinException;
  * and retrieving tasks, with bounds checking and error handling.
  */
 public class TaskList {
+
     private static final int MAX_TASKS = 100;
     private final ArrayList<Task> tasks;
 

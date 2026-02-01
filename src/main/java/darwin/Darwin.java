@@ -11,8 +11,8 @@ import darwin.ui.Ui;
  * the initialization of all components, manages the main application loop, and processes user commands
  * until termination.
  */
-
 public class Darwin {
+
     private static final String FILE_PATH = "./data/darwin.txt";
     private final Storage storage;
     private TaskList tasks;
@@ -30,7 +30,7 @@ public class Darwin {
         storage = new Storage(filePath); // load tasks from file
         try {
             tasks = new TaskList(storage.loadTasks());
-        } catch (Exception e) {
+        } catch (DarwinException e) {
             ui.printError("Error loading tasks: " + e.getMessage());
             tasks = new TaskList();
         }
@@ -68,7 +68,7 @@ public class Darwin {
      * The main entry point for the Darwin task management application.
      * Creates a new Darwin instance and starts the application.
      *
-     * @param args Command line arguments (not currently used).
+     * @param args Command line arguments.
      */
     public static void main(String[] args) {
         new Darwin(FILE_PATH).run();

@@ -12,6 +12,7 @@ import darwin.ui.Ui;
  * creates a simple task without any date or time constraints.
  */
 public class TodoCommand extends Command {
+
     private final String description;
 
     /**

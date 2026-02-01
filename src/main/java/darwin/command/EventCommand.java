@@ -8,6 +8,7 @@ import darwin.task.TaskList;
 import darwin.ui.Ui;
 
 public class EventCommand extends Command {
+
     private final String description;
     private final String from;
     private final String to;
@@ -24,6 +25,4 @@ public class EventCommand extends Command {
         tasks.addTask(task);
         ui.printTaskAdded(task, tasks.getTaskCount());
     }
-
-
 }

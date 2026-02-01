@@ -6,6 +6,7 @@ package darwin;
  * file parsing errors, or task management issues.
  */
 public class DarwinException extends RuntimeException {
+
     /**
      * Constructs a new DarwinException with the specified detail message.
      *

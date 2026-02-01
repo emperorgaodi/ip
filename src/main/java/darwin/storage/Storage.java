@@ -18,7 +18,8 @@ import java.util.Scanner;
  * ensuring data persistence across application sessions.
  */
 public class Storage {
-    private String filePath;
+
+    private final String filePath;
 
     /**
      * Constructs a Storage object with the specified file path for task storage.
@@ -119,7 +120,7 @@ public class Storage {
         } catch (DarwinException e) {
             System.out.println("Warning: Skipping darwin.task - " + e.getMessage());
             return null;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             System.out.println("Warning: Skipping invalid line");
             return null;
         }
@@ -176,7 +177,7 @@ public class Storage {
         }
 
         String dateString = parts[3].trim();
-        return new Deadline(description, dateString); // Will throw if date invalid
+        return new Deadline(description, dateString);
     }
 
     /**
@@ -194,6 +195,6 @@ public class Storage {
 
         String from = parts[3].trim();
         String to = parts[4].trim();
-        return new Event(description, from, to); // Will throw if dates invalid
+        return new Event(description, from, to);
     }
 }

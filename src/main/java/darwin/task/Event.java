@@ -11,8 +11,8 @@ import java.time.LocalDate;
  */
 public class Event extends Task {
 
-    protected LocalDate fromDate;
-    protected LocalDate toDate;
+    private LocalDate fromDate;
+    private LocalDate toDate;
 
     /**
      * Constructs a new Event task with the specified description, start date, and end date.
@@ -50,7 +50,7 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + fromDate.toString() + " | "
+        return "E | " + (isDone() ? "1" : "0") + " | " + getDescription() + " | " + fromDate.toString() + " | "
                 + toDate.toString();
     }
 }
