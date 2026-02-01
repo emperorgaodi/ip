@@ -6,6 +6,7 @@ import darwin.command.DeadlineCommand;
 import darwin.command.DeleteCommand;
 import darwin.command.EventCommand;
 import darwin.command.ExitCommand;
+import darwin.command.FindCommand;
 import darwin.command.ListCommand;
 import darwin.command.MarkCommand;
 import darwin.command.TodoCommand;
@@ -31,6 +32,8 @@ public class Parser {
             return new ExitCommand();
         } else if (input.equalsIgnoreCase("list")) {
             return new ListCommand();
+        } else if (input.startsWith("find ")) {
+            return parseFindCommand(input);
         } else if (input.startsWith("mark ")) {
             return parseMarkCommand(input);
         } else if (input.startsWith("unmark ")) {
@@ -45,8 +48,21 @@ public class Parser {
             return parseDeleteCommand(input);
         } else {
             throw new DarwinException(" Unknown darwin.command :( Please use: todo, deadline, event, list, " +
-                    "mark, unmark, delete or bye");
+                    "mark, unmark, delete, find or bye");
         }
+    }
+
+    private static Command parseFindCommand(String input) throws DarwinException {
+        if (input.length() <= 5) {
+            throw new DarwinException("Please use this format 'find <keyword>'!");
+        }
+
+        String keyword = input.substring(5).trim();
+        if (keyword.isEmpty()) {
+            throw new DarwinException("Search keyword is empty! Please use this format 'find <keyword>'!");
+        }
+
+        return new FindCommand(keyword);
     }
 
     private static MarkCommand parseMarkCommand(String input) throws DarwinException {

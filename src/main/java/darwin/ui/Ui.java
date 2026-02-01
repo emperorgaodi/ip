@@ -65,6 +65,17 @@ public class Ui {
         System.out.println("   " + task);
     }
 
+    public void printFoundTasks(ArrayList<Task> foundTasks, String keyword) {
+        if (foundTasks.isEmpty()) {
+            System.out.println(" No tasks found containing: \"" + keyword + "\"");
+        } else {
+            System.out.println(" Here are the matching tasks in your list:");
+            for (int i = 0; i < foundTasks.size(); i++) {
+                System.out.println(" " + (i + 1) + "." + foundTasks.get(i));
+            }
+        }
+    }
+
     public void showDeletedTask(Task task, int taskCount) {
         System.out.println(" Noted. I've removed this darwin.task:");
         System.out.println("   " + task);

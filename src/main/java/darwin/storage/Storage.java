@@ -74,7 +74,7 @@ public class Storage {
     public void saveTasks(ArrayList<Task> tasks) {
         try {
             // Create data directory if it does not exist
-            File dataDir = new File("Data");
+            File dataDir = new File("data");
             if (!dataDir.exists()) {
                 dataDir.mkdir();
             }
@@ -105,9 +105,9 @@ public class Storage {
                 return null; // skip invalid lines
             }
 
-            String type = parts[0];
-            boolean isDone = parts[1].equals("1");
-            String description = parts[2];
+            String type = parts[0].trim();
+            boolean isDone = parts[1].trim().equals("1");
+            String description = parts[2].trim();
 
             Task task = parseTaskByType(type, parts, description);
 
