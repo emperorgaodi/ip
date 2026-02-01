@@ -6,8 +6,9 @@ package darwin.task;
  * specific task types (ToDo, Deadline, Event).
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+
+    private String description;
+    private boolean isDone;
 
     /**
      * Constructs a new Task with the specified description.
@@ -18,6 +19,15 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+    }
+
+    /**
+     * Returns the description of the task.
+     *
+     * @return The task description.
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**

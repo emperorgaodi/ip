@@ -11,6 +11,7 @@ import darwin.ui.Ui;
  * the user interface and storage systems.
  */
 public abstract class Command {
+
     /**
      * Executes the specific command using the provided application components.
      * The exact behavior depends on the concrete command implementation.

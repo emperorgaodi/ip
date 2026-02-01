@@ -7,6 +7,7 @@ import darwin.ui.Ui;
 import darwin.storage.Storage;
 
 public class DeleteCommand extends Command {
+
     private final int taskNumber;
 
     public DeleteCommand(int taskNumber) {

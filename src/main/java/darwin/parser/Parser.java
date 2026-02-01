@@ -16,6 +16,7 @@ import darwin.command.TodoCommand;
  * validating the input format and parameters.
  */
 public class Parser {
+
     /**
      * Parses a raw input string from the user and returns the corresponding Command object.
      * Validates the command format and extracts necessary parameters for command construction.
@@ -43,18 +44,11 @@ public class Parser {
         } else if (input.startsWith("delete ")) {
             return parseDeleteCommand(input);
         } else {
-            throw new DarwinException(" Unknown darwin.command :( Please use: todo, deadline, event, list, mark, unmark, " +
-                    "delete or bye");
+            throw new DarwinException(" Unknown darwin.command :( Please use: todo, deadline, event, list, " +
+                    "mark, unmark, delete or bye");
         }
     }
 
-    /**
-     * Parses a mark command from the input string.
-     *
-     * @param input The input string starting with "mark " (e.g., "mark 3").
-     * @return A MarkCommand object to mark the specified task as done.
-     * @throws DarwinException If the task number is missing or not a valid integer.
-     */
     private static MarkCommand parseMarkCommand(String input) throws DarwinException {
         String[] parts = input.split("\\s+");
 
@@ -70,13 +64,6 @@ public class Parser {
         }
     }
 
-    /**
-     * Parses an unmark command from the input string.
-     *
-     * @param input The input string starting with "unmark " (e.g., "unmark 3").
-     * @return A MarkCommand object to mark the specified task as not done.
-     * @throws DarwinException If the task number is missing or not a valid integer.
-     */
     private static MarkCommand parseUnmarkCommand(String input) throws DarwinException {
         String[] parts = input.split("\\s+");
 
@@ -92,13 +79,6 @@ public class Parser {
         }
     }
 
-    /**
-     * Parses a todo command from the input string.
-     *
-     * @param input The input string starting with "todo " (e.g., "todo read book").
-     * @return A TodoCommand object to add a new todo task.
-     * @throws DarwinException If the description is missing or empty.
-     */
     private static TodoCommand parseTodoCommand(String input) throws DarwinException {
         if (input.length() <= 5) {
             throw new DarwinException(" Please use this format 'todo <description>'!");
@@ -112,14 +92,6 @@ public class Parser {
         return new TodoCommand(description);
     }
 
-    /**
-     * Parses a deadline command from the input string.
-     *
-     * @param input The input string starting with "deadline " (e.g., "deadline assignment /by 2023-12-31").
-     * @return A DeadlineCommand object to add a new deadline task.
-     * @throws DarwinException If the format is invalid, description is missing,
-     *         or the deadline date is missing/empty.
-     */
     private static DeadlineCommand parseDeadlineCommand(String input) throws DarwinException {
         if (input.length() <= 9) {
             throw new DarwinException(" Please use this format 'deadline <description> /by yyyy-mm-dd'!");
@@ -143,31 +115,26 @@ public class Parser {
         return new DeadlineCommand(description, by);
     }
 
-    /**
-     * Parses an event command from the input string.
-     *
-     * @param input The input string starting with "event " (e.g., "event meeting /from 2023-12-01 /to 2023-12-02").
-     * @return An EventCommand object to add a new event task.
-     * @throws DarwinException If the format is invalid, description is missing,
-     *         or the start/end dates are missing/empty.
-     */
     private static EventCommand parseEventCommand(String input) throws DarwinException {
         if (input.length() <= 6) {
-            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd /to yyyy-mm-dd!");
+            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd " +
+                    "/to yyyy-mm-dd!");
         }
 
         String remaining = input.substring(6).trim();
         String[] parts = remaining.split(" /from ", 2);
 
         if (parts.length < 2) {
-            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd /to yyyy-mm-dd!");
+            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd " +
+                    "/to yyyy-mm-dd!");
         }
 
         String description = parts[0].trim();
         String[] timeParts = parts[1].split(" /to ", 2);
 
         if (timeParts.length < 2) {
-            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd /to yyyy-mm-dd!");
+            throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd " +
+                    "/to yyyy-mm-dd!");
         }
 
         String from = timeParts[0].trim();
@@ -181,13 +148,6 @@ public class Parser {
         return new EventCommand(description, from, to);
     }
 
-    /**
-     * Parses a delete command from the input string.
-     *
-     * @param input The input string starting with "delete " (e.g., "delete 3").
-     * @return A DeleteCommand object to remove the specified task.
-     * @throws DarwinException If the task number is missing or not a valid integer.
-     */
     private static DeleteCommand parseDeleteCommand(String input) throws DarwinException {
         String[] parts = input.split("\\s+");
 

@@ -10,8 +10,8 @@ import darwin.DateParser;
  */
 public class Deadline extends Task {
 
-    protected String by;
-    protected LocalDate date;
+    private String by;
+    private LocalDate date;
 
     /**
      * Constructs a new Deadline task with the specified description and due date.
@@ -49,6 +49,6 @@ public class Deadline extends Task {
     @Override
     public String toFileFormat() {
         // Save in yyyy-mm-dd format
-        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + date.toString();
+        return "D | " + (isDone() ? "1" : "0") + " | " + getDescription() + " | " + date.toString();
     }
 }
