@@ -12,14 +12,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Represents a storage handler for task persistence. A <code>Storage</code> object
+ * manages the loading of tasks from a file on disk and the saving of tasks back to the file,
+ * ensuring data persistence across application sessions.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path for task storage.
+     *
+     * @param filePath The file path where tasks will be loaded from and saved to.
+     *                 The file is created if it doesn't exist.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
-    // Load tasks from file - returns empty list if file does not exist
+    /**
+     * Loads tasks from the storage file. If the file doesn't exist, returns an empty list.
+     * Parses each line of the file into Task objects, handling any parsing errors gracefully.
+     *
+     * @return An ArrayList containing all tasks successfully loaded from the file.
+     *         Returns an empty list if the file doesn't exist or contains no valid tasks.
+     */
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -47,6 +64,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the current list of tasks to the storage file. Creates the data directory
+     * if it doesn't exist, and overwrites the existing file with the current task data.
+     *
+     * @param tasks The ArrayList of tasks to be saved to the file.
+     */
     public void saveTasks(ArrayList<Task> tasks) {
         try {
             // Create data directory if it does not exist
@@ -65,7 +88,13 @@ public class Storage {
         }
     }
 
-    // parse line from file into darwin.task.Task object
+    /**
+     * Parses a single line from the storage file into a Task object.
+     * Handles different task types (Todo, Deadline, Event) and their specific formats.
+     *
+     * @param line A single line from the storage file to parse.
+     * @return A Task object parsed from the line, or null if the line is invalid.
+     */
     private Task parseLine(String line) {
         try {
             String[] parts = line.split("\\|");
@@ -96,6 +125,15 @@ public class Storage {
         }
     }
 
+    /**
+     * Routes parsing to the appropriate task type parser based on the type code.
+     *
+     * @param type The task type code ("T" for Todo, "D" for Deadline, "E" for Event).
+     * @param parts The split parts of the file line.
+     * @param description The task description extracted from the line.
+     * @return A Task object of the appropriate type.
+     * @throws DarwinException If the task type is unknown or the line format is invalid.
+     */
     private Task parseTaskByType(String type, String[] parts, String description) throws DarwinException {
         switch (type) {
             case "T":
@@ -109,6 +147,14 @@ public class Storage {
         }
     }
 
+    /**
+     * Parses a todo task line from the storage file.
+     *
+     * @param parts The split parts of the file line.
+     * @param description The task description.
+     * @return A Todo task object.
+     * @throws DarwinException If the line doesn't have exactly 3 parts.
+     */
     private Task parseTodoLine(String[] parts, String description) throws DarwinException {
         if (parts.length != 3) {
             throw new DarwinException("Invalid todo format in file");
@@ -116,6 +162,14 @@ public class Storage {
         return new ToDo(description);
     }
 
+    /**
+     * Parses a deadline task line from the storage file.
+     *
+     * @param parts The split parts of the file line.
+     * @param description The task description.
+     * @return A Deadline task object.
+     * @throws DarwinException If the line doesn't have exactly 4 parts or the date is invalid.
+     */
     private Task parseDeadlineLine(String[] parts, String description) throws DarwinException {
         if (parts.length != 4) {
             throw new DarwinException("Invalid deadline format in file");
@@ -125,6 +179,14 @@ public class Storage {
         return new Deadline(description, dateString); // Will throw if date invalid
     }
 
+    /**
+     * Parses an event task line from the storage file.
+     *
+     * @param parts The split parts of the file line.
+     * @param description The task description.
+     * @return An Event task object.
+     * @throws DarwinException If the line doesn't have exactly 5 parts or the dates are invalid.
+     */
     private Task parseEventLine(String[] parts, String description) throws DarwinException {
         if (parts.length != 5) {
             throw new DarwinException("Invalid event format in file");
