@@ -3,86 +3,104 @@ package darwin.ui;
 import darwin.task.Task;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Scanner; // not used for GUI, kept for legacy usage
 
 public class Ui {
 
     private static final String HORIZONTAL_LINE = "____________________________________________________________";
-    private final Scanner scanner;
+    private final Scanner scanner; // not used for GUI, kept for legacy usage
+
+    private StringBuilder responseBuilder; // for GUI mode
 
     public Ui() {
-        this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in); // not used for GUI, kept for legacy usage
+        this.responseBuilder = new StringBuilder();
+    }
+
+    public void setResponseBuilder(StringBuilder responseBuilder) {
+        this.responseBuilder = responseBuilder;
+    }
+
+    public void clearResponse() {
+        if (responseBuilder != null) {
+            responseBuilder.setLength(0);
+        }
     }
 
     public void printGreeting() {
-        System.out.println(HORIZONTAL_LINE);
-        System.out.println(" Hello! I'm darwin.Darwin");
-        System.out.println(" What can I do for you?");
-        System.out.println(HORIZONTAL_LINE);
+        String greeting = "Hello! I'm Darwin\nWhat can I do for you?";
+        output(greeting);
     }
 
     public void printGoodbye() {
-        System.out.println(HORIZONTAL_LINE);
-        System.out.println(" Bye. Hope to see you again soon!");
-        System.out.println(HORIZONTAL_LINE);
+        String byeMessage = "Bye. Hope to see you again soon!";
+        output(byeMessage);
     }
 
     public void printLine() {
-        System.out.println(HORIZONTAL_LINE);
+        output(HORIZONTAL_LINE);
     }
 
-    public String readCommand() {
+    public String readCommand() { // not used for GUI, kept for legacy usage
         return scanner.nextLine().trim();
     }
 
     public void printError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
+        output(errorMessage);
     }
 
     public void printTaskAdded(Task task, int taskCount) {
-        System.out.println(" Got it. I've added this darwin.task:");
-        System.out.println("   " + task);
-        System.out.println(" Now you have " + taskCount + " tasks in the list.");
+        String taskAddedMessage = "Got it. I've added this task:\n" +
+                " " + task + "\n" +
+                "Now you have " + taskCount + " tasks in the list.";
+        output(taskAddedMessage);
     }
 
     public void printTaskList(ArrayList<Task> tasks) {
         if (tasks.isEmpty()) {
-            System.out.println(" No tasks in your list.");
+            output("No tasks in your list.");
         } else {
-            System.out.println(" Here are the tasks in your list:");
+            output("Here are the tasks in your list:");
             for (int i = 0; i < tasks.size(); i++) {
-                System.out.println(" " + (i + 1) + "." + tasks.get(i));
+                output(" " + (i + 1) + "." + tasks.get(i));
             }
         }
     }
 
     public void printMarkedTask(Task task, boolean isDone) {
         if (isDone) {
-            System.out.println(" Nice! I've marked this darwin.task as done:");
+            output("Nice! I've marked this task as done:");
         } else {
-            System.out.println(" OK, I've marked this darwin.task as not done yet:");
+            output("OK, I've marked this task as not done yet:");
         }
-        System.out.println("   " + task);
+        output("  " + task);
     }
 
     public void printFoundTasks(ArrayList<Task> foundTasks, String keyword) {
         if (foundTasks.isEmpty()) {
-            System.out.println(" No tasks found containing: \"" + keyword + "\"");
+            output("No tasks found containing: \"" + keyword + "\"");
         } else {
-            System.out.println(" Here are the matching tasks in your list:");
+            output("Here are the matching tasks in your list:");
             for (int i = 0; i < foundTasks.size(); i++) {
-                System.out.println(" " + (i + 1) + "." + foundTasks.get(i));
+                output(" " + (i + 1) + "." + foundTasks.get(i));
             }
         }
     }
 
     public void showDeletedTask(Task task, int taskCount) {
-        System.out.println(" Noted. I've removed this darwin.task:");
-        System.out.println("   " + task);
-        System.out.println(" Now you have " + taskCount + " tasks in the list.");
+        String taskDeletedMessage = "Noted. I've removed this task:\n" +
+                " " + task + "\n" +
+                "Now you have " + taskCount + " tasks in the list.";
+        output(taskDeletedMessage);
     }
 
-    public void close() {
+    private void output(String text) {
+        if (responseBuilder != null) {
+            responseBuilder.append(text).append("\n");
+        }
+    }
+
+    public void close() { // not used for GUI, kept for legacy usage
         scanner.close();
     }
 }

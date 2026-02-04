@@ -1,0 +1,71 @@
+.root {
+    /* Create a looked-up color called "main-color" within root. */
+    main-color: linear-gradient(to bottom right, #7b84ff 0.000%, #68a5ff 16.667%, #5fc6ff 33.333%, #63e5fc 50.000%,
+        #73ffcd 66.667%, #8dff9d 83.333%, #aeff6f 100.000%);
+    -fx-background-color: main-color;
+    -fx-padding: 10;
+}
+
+/* Main container padding */
+.anchor-pane {
+    -fx-padding: 10;
+}
+
+/* ScrollPane styling - makes it act as the conversation area */
+.scroll-pane {
+    -fx-background-color: transparent !important;
+    -fx-background: transparent !important;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 2;
+    -fx-padding: 0;
+}
+
+/* Viewport is the visible area inside scrollpane */
+.scroll-pane .viewport {
+    -fx-background-color: rgba(128, 128, 128, 0.15);
+    -fx-background-radius: 25;
+}
+
+.text-field {
+    -fx-background-color: #d9ffe2;
+    -fx-font: 20px "Arial";
+}
+
+.button {
+    -fx-background-color: mediumspringgreen;
+    -fx-font: italic bold 16px "Arial";
+}
+
+.button:hover {
+    -fx-background-color:cyan;
+    -fx-font-size: 18px;
+}
+
+.button:pressed {
+    -fx-background-color:orange;
+    -fx-font-size: 20px;
+}
+
+.scroll-pane,
+.scroll-pane .viewport {
+    -fx-background-color: rgba(128, 128, 128, 0.15);
+}
+
+.scroll-bar {
+    -fx-font-size: 10px;  /* Change width of scroll bar. */
+    -fx-background-color: main-color;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #ff9cb4;
+    -fx-background-radius: 1em;
+}
+
+/* Hides the increment and decrement buttons. */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}
