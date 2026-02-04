@@ -37,7 +37,7 @@ public class TaskList {
      */
     public void addTask(Task task) throws DarwinException {
         if (tasks.size() >= MAX_TASKS) {
-            throw new DarwinException(" darwin.task.Task list is full! Cannot add more tasks.");
+            throw new DarwinException(" Task list is full! Cannot add more tasks.");
         }
         tasks.add(task);
     }
@@ -52,7 +52,7 @@ public class TaskList {
      */
     public Task deleteTask(int taskNumber) throws DarwinException {
         if (!isValidTaskNumber(taskNumber)) {
-            throw new DarwinException(" darwin.task.Task list is full! Cannot add more tasks.");
+            throw new DarwinException(" Task list is full! Cannot add more tasks.");
         }
         return tasks.remove(taskNumber - 1);
     }
@@ -85,7 +85,7 @@ public class TaskList {
          */
     public void markTask(int taskNumber, boolean isDone) throws DarwinException {
         if (!isValidTaskNumber(taskNumber)) {
-            throw new DarwinException("Invalid darwin.task number.");
+            throw new DarwinException("Invalid task number.");
         }
 
         Task task = tasks.get(taskNumber - 1);
@@ -124,7 +124,7 @@ public class TaskList {
      */
     public Task getTask(int taskNumber) throws DarwinException {
         if (!isValidTaskNumber(taskNumber)) {
-            throw new DarwinException("Invalid darwin.task number.");
+            throw new DarwinException("Invalid task number.");
         }
         return tasks.get(taskNumber - 1);
     }

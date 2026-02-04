@@ -32,22 +32,22 @@ public class Parser {
             return new ExitCommand();
         } else if (input.equalsIgnoreCase("list")) {
             return new ListCommand();
-        } else if (input.startsWith("find ")) {
+        } else if (input.startsWith("find")) {
             return parseFindCommand(input);
-        } else if (input.startsWith("mark ")) {
+        } else if (input.startsWith("mark")) {
             return parseMarkCommand(input);
-        } else if (input.startsWith("unmark ")) {
+        } else if (input.startsWith("unmark")) {
             return parseUnmarkCommand(input);
-        } else if (input.startsWith("todo ")) {
+        } else if (input.startsWith("todo")) {
             return parseTodoCommand(input);
-        } else if (input.startsWith("deadline ")) {
+        } else if (input.startsWith("deadline")) {
             return parseDeadlineCommand(input);
-        } else if (input.startsWith("event ")) {
+        } else if (input.startsWith("event")) {
             return parseEventCommand(input);
-        } else if (input.startsWith("delete ")) {
+        } else if (input.startsWith("delete")) {
             return parseDeleteCommand(input);
         } else {
-            throw new DarwinException(" Unknown darwin.command :( Please use: todo, deadline, event, list, " +
+            throw new DarwinException(" Unknown command :( Please use: todo, deadline, event, list, " +
                     "mark, unmark, delete, find or bye");
         }
     }
@@ -69,14 +69,14 @@ public class Parser {
         String[] parts = input.split("\\s+");
 
         if (parts.length < 2) {
-            throw new DarwinException(" Please specify a darwin.task number.");
+            throw new DarwinException(" Please specify a task number.");
         }
 
         try {
             int taskNumber = Integer.parseInt(parts[1]);
             return new MarkCommand(taskNumber, true);
         } catch (NumberFormatException e) {
-            throw new DarwinException(" Please provide a valid darwin.task number after 'mark'.");
+            throw new DarwinException(" Please provide a valid task number after 'mark'.");
         }
     }
 
@@ -84,14 +84,14 @@ public class Parser {
         String[] parts = input.split("\\s+");
 
         if (parts.length < 2) {
-            throw new DarwinException(" Please specify a darwin.task number.");
+            throw new DarwinException(" Please specify a task number.");
         }
 
         try {
             int taskNumber = Integer.parseInt(parts[1]);
             return new MarkCommand(taskNumber, false);
         } catch (NumberFormatException e) {
-            throw new DarwinException(" Please provide a valid darwin.task number after 'mark'.");
+            throw new DarwinException(" Please provide a valid task number after 'mark'.");
         }
     }
 
@@ -168,14 +168,14 @@ public class Parser {
         String[] parts = input.split("\\s+");
 
         if (parts.length < 2) {
-            throw new DarwinException(" Please specify a darwin.task number.");
+            throw new DarwinException(" Please specify a task number.");
         }
 
         try {
             int taskNumber = Integer.parseInt(parts[1]);
             return new DeleteCommand(taskNumber);
         } catch (NumberFormatException e) {
-            throw new DarwinException(" Please provide a valid darwin.task number after 'delete'.");
+            throw new DarwinException(" Please provide a valid task number after 'delete'.");
         }
     }
 }

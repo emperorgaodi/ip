@@ -118,7 +118,7 @@ public class Storage {
             return task;
 
         } catch (DarwinException e) {
-            System.out.println("Warning: Skipping darwin.task - " + e.getMessage());
+            System.out.println("Warning: Skipping task - " + e.getMessage());
             return null;
         } catch (RuntimeException e) {
             System.out.println("Warning: Skipping invalid line");
@@ -144,7 +144,7 @@ public class Storage {
             case "E":
                 return parseEventLine(parts, description);
             default:
-                throw new DarwinException("Unknown darwin.task type in file: " + type);
+                throw new DarwinException("Unknown task type in file: " + type);
         }
     }
 
