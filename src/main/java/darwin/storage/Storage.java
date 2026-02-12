@@ -28,6 +28,9 @@ public class Storage {
      *                 The file is created if it doesn't exist.
      */
     public Storage(String filePath) {
+        assert filePath != null : "File path cannot be null";
+        assert !filePath.trim().isEmpty() : "File path cannot be empty";
+
         this.filePath = filePath;
     }
 
@@ -72,18 +75,29 @@ public class Storage {
      * @param tasks The ArrayList of tasks to be saved to the file.
      */
     public void saveTasks(ArrayList<Task> tasks) {
+        assert tasks != null : "Tasks list cannot be null when saving";
+        assert filePath != null : "File path must be initialized before saving";
+
         try {
             // Create data directory if it does not exist
             File dataDir = new File("data");
             if (!dataDir.exists()) {
-                dataDir.mkdir();
+                boolean created = dataDir.mkdir();
+                assert created : "Failed to create data directory";
             }
 
             FileWriter writer = new FileWriter(filePath);
             for (Task task : tasks) {
-                writer.write(task.toFileFormat() + "\n");
+                assert task != null : "Task in list cannot be null when saving";
+                String fileFormat = task.toFileFormat();
+                assert fileFormat != null : "Task.toFileFormat() should not return null";
+
+                writer.write(fileFormat + "\n");
             }
             writer.close();
+
+            File savedFile = new File(filePath);
+            assert savedFile.exists() : "File should exist after saving: " + filePath;
         } catch (IOException e) {
             System.out.println("Error saving tasks: " + e.getMessage());
         }

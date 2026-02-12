@@ -36,10 +36,16 @@ public class TaskList {
      * @throws DarwinException If the task list has reached its maximum capacity (100 tasks).
      */
     public void addTask(Task task) throws DarwinException {
+        assert task != null : "Task to add cannot be null";
+        assert tasks != null : "Tasks list must be initialized";
+
         if (tasks.size() >= MAX_TASKS) {
             throw new DarwinException(" Task list is full! Cannot add more tasks.");
         }
         tasks.add(task);
+
+        assert tasks.contains(task) : "Task should be present after adding";
+        assert tasks.size() > 0 : "Task list should not be empty after adding";
     }
 
     /**
@@ -51,10 +57,21 @@ public class TaskList {
      * @throws DarwinException If the task number is invalid (out of bounds).
      */
     public Task deleteTask(int taskNumber) throws DarwinException {
+        assert tasks != null : "Tasks list must be initialized";
+        assert taskNumber >= 1 : "Task number should be at least 1, but got: " + taskNumber;
+
         if (!isValidTaskNumber(taskNumber)) {
             throw new DarwinException(" Task list is full! Cannot add more tasks.");
         }
-        return tasks.remove(taskNumber - 1);
+
+        int previousSize = tasks.size();
+        Task removedTask = tasks.remove(taskNumber - 1);
+
+        assert removedTask != null : "Removed task should not be null";
+        assert tasks.size() == previousSize - 1 :
+          "Task list size should decrease by 1. Before: " + previousSize + ", After: " + tasks.size();
+
+        return removedTask;
     }
 
     /**
@@ -84,16 +101,27 @@ public class TaskList {
          * @throws DarwinException If the task number is invalid (out of bounds).
          */
     public void markTask(int taskNumber, boolean isDone) throws DarwinException {
+        assert tasks != null : "Tasks list must be initialized";
+        assert taskNumber >= 1 : "Task number should be at least 1, but got: " + taskNumber;
+
         if (!isValidTaskNumber(taskNumber)) {
             throw new DarwinException("Invalid task number.");
         }
 
         Task task = tasks.get(taskNumber - 1);
+        assert task != null : "Task at position " + taskNumber + " should not be null";
+
+        boolean previousStatus = task.isDone();
         if (isDone) {
             task.markAsDone();
+            assert task.isDone() : "Task should be marked as done after calling markAsDone()";
         } else {
             task.markAsNotDone();
+            assert !task.isDone() : "Task should be marked as not done after calling markAsNotDone()";
         }
+
+        assert task.isDone() != previousStatus || isDone == previousStatus :
+          "Task status should change when marking differently";
     }
 
     /**
