@@ -17,8 +17,12 @@ public class Task {
      * @param description The text description of the task.
      */
     public Task(String description) {
+        assert description != null : "Task description cannot be null";
+
         this.description = description;
         this.isDone = false;
+
+        assert !this.isDone : "New task should not be marked as done";
     }
 
     /**
@@ -44,14 +48,24 @@ public class Task {
      * Marks this task as completed by setting its done status to true.
      */
     public void markAsDone() {
+        boolean wasDone = this.isDone;
         this.isDone = true;
+
+        assert this.isDone : "Task should be marked as done after markAsDone()";
+        assert this.isDone != wasDone :
+            "Task status should change from false to true, was: " + wasDone;
     }
 
     /**
      * Marks this task as not completed by setting its done status to false.
      */
     public void markAsNotDone() {
+        boolean wasDone = this.isDone;
         this.isDone = false;
+
+        assert !this.isDone : "Task should be marked as not done after markAsNotDone()";
+        assert this.isDone != wasDone :
+                "Task status should change from true to false, was: " + wasDone;
     }
 
     /**

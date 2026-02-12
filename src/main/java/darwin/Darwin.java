@@ -1,9 +1,11 @@
 package darwin;
 
+import java.util.ArrayList;
 import darwin.command.Command;
 import darwin.parser.Parser;
 import darwin.storage.Storage;
 import darwin.task.TaskList;
+import darwin.task.Task;
 import darwin.ui.Ui;
 
 /**
@@ -26,53 +28,29 @@ public class Darwin {
      * @param filePath The file path where tasks are persistently stored and loaded from.
      */
     public Darwin(String filePath) {
+        assert filePath != null : "File path cannot be null";
+
         ui = new Ui();
+        assert ui != null : "UI component should be initialized";
+
         storage = new Storage(filePath); // load tasks from file
+        assert storage != null : "Storage component should be initialized";
+
         try {
-            tasks = new TaskList(storage.loadTasks());
+            ArrayList<Task> loadedTasks = storage.loadTasks();
+            assert loadedTasks != null : "loadTasks() should never return null";
+
+            tasks = new TaskList(loadedTasks);
+
+            assert tasks != null : "TaskList should be initialized";
         } catch (DarwinException e) {
             ui.printError("Error loading tasks: " + e.getMessage());
             tasks = new TaskList();
+
+            assert tasks != null : "TaskList should be initialized even on error";
+            assert tasks.getTaskCount() == 0 : "New TaskList should be empty";
         }
     }
-//
-//    /**
-//     * Starts and runs the main application loop. Continuously reads user commands,
-//     * parses them, executes the corresponding actions, and displays results until
-//     * an exit command is received.
-//     */
-//    public void run() { // not used for GUI, kept for legacy usage
-//        ui.printGreeting();
-//
-//        boolean isExit = false;
-//        while (!isExit) {
-//            try {
-//                String fullCommand = ui.readCommand();
-//                ui.printLine();
-//                Command c = Parser.parse(fullCommand);
-//                c.execute(tasks, ui, storage);
-//                storage.saveTasks(tasks.getTasks());
-//                isExit = c.isExit();
-//            } catch (DarwinException e) {
-//                ui.printError(e.getMessage());
-//            } finally {
-//                ui.printLine();
-//            }
-//        }
-//
-//        ui.printGoodbye();
-//        ui.close();
-//    }
-//
-//    /**
-//     * The main entry point for the Darwin task management application.
-//     * Creates a new Darwin instance and starts the application.
-//     *
-//     * @param args Command line arguments.
-//     */
-//    public static void main(String[] args) {
-//        new Darwin(FILE_PATH).run();
-//    }
 
     public String getGreeting() {
         StringBuilder greetingBuilder = new StringBuilder();
@@ -85,6 +63,11 @@ public class Darwin {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
+        assert input != null : "Input cannot be null";
+        assert ui != null : "UI component must be initialized";
+        assert tasks != null : "TaskList must be initialized";
+        assert storage != null : "Storage must be initialized";
+
         try {
             StringBuilder responseBuilder = new StringBuilder();
             ui.clearResponse(); // clear any previous content
@@ -98,7 +81,6 @@ public class Darwin {
 
             if (c.isExit()) {
                 // For GUI, you can just close the window
-                // Or return a special message
                 response += "Bye. Hope to see you again soon!\n" +
                         "[Darwin will now close...]";
             }
