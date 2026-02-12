@@ -19,6 +19,31 @@ import java.util.Scanner;
  */
 public class Storage {
 
+    // ============ FILE FORMAT CONSTANTS ============
+    private static final String DELIMITER = "\\|";
+    private static final String DATA_DIRECTORY = "data";
+
+    // ============ TASK TYPE CONSTANTS ============
+    private static final String TASK_TYPE_TODO = "T";
+    private static final String TASK_TYPE_DEADLINE = "D";
+    private static final String TASK_TYPE_EVENT = "E";
+    private static final String STATUS_DONE = "1";
+
+    // ============ INDEX CONSTANTS ============
+    private static final int INDEX_TYPE = 0;
+    private static final int INDEX_STATUS = 1;
+    private static final int INDEX_DESCRIPTION = 2;
+    private static final int INDEX_DEADLINE_DATE = 3;
+    private static final int INDEX_EVENT_FROM = 3;
+    private static final int INDEX_EVENT_TO = 4;
+
+    // ============ VALID PART LENGTHS ============
+    private static final int SHORTEST_POSIBLE_TASK_LENGTH = 3;
+    private static final int TODO_PARTS_LENGTH = 3;
+    private static final int DEADLINE_PARTS_LENGTH = 4;
+    private static final int EVENT_PARTS_LENGTH = 5;
+
+
     private final String filePath;
 
     /**
@@ -39,31 +64,45 @@ public class Storage {
      *         Returns an empty list if the file doesn't exist or contains no valid tasks.
      */
     public ArrayList<Task> loadTasks() {
-        ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            // file does not exist - Ok for first run
-            return tasks;
+        if (!isFileExists()) {
+            return new ArrayList<>();
         }
 
-        try {
-            Scanner scanner = new Scanner(file);
+        return readTasksFromFile();
+    }
+
+    // helper functions for load tasks - start
+    private boolean isFileExists() {
+        File file = new File(filePath);
+        return file.exists();
+    }
+
+    private ArrayList<Task> readTasksFromFile() {
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                Task task = parseLine(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
+                addTaskIfValid(line, tasks);
             }
-            scanner.close();
         } catch (IOException e) {
-            // File does not exist - Ok if running program for the first time
             System.out.println("Error reading file: " + e.getMessage());
         }
 
         return tasks;
     }
+
+    private void addTaskIfValid(String line, ArrayList<Task> tasks) {
+        Task task = parseLine(line);
+        if (isTaskValid(task)) {
+            tasks.add(task);
+        }
+    }
+
+    private boolean isTaskValid(Task task) {
+        return task != null;
+    }
+    // helper functions for load tasks - end
 
     /**
      * Saves the current list of tasks to the storage file. Creates the data directory
@@ -74,7 +113,7 @@ public class Storage {
     public void saveTasks(ArrayList<Task> tasks) {
         try {
             // Create data directory if it does not exist
-            File dataDir = new File("data");
+            File dataDir = new File(DATA_DIRECTORY);
             if (!dataDir.exists()) {
                 dataDir.mkdir();
             }
@@ -98,16 +137,16 @@ public class Storage {
      */
     private Task parseLine(String line) {
         try {
-            String[] parts = line.split("\\|");
+            String[] parts = line.split(DELIMITER);
 
-            if (parts.length < 3) {
+            if (parts.length < SHORTEST_POSIBLE_TASK_LENGTH) {
                 System.out.println("Warning: Skipping invalid line: " + line);
                 return null; // skip invalid lines
             }
 
-            String type = parts[0].trim();
-            boolean isDone = parts[1].trim().equals("1");
-            String description = parts[2].trim();
+            String type = parts[INDEX_TYPE].trim();
+            boolean isDone = parts[INDEX_STATUS].trim().equals(STATUS_DONE);
+            String description = parts[INDEX_DESCRIPTION].trim();
 
             Task task = parseTaskByType(type, parts, description);
 
@@ -137,11 +176,11 @@ public class Storage {
      */
     private Task parseTaskByType(String type, String[] parts, String description) throws DarwinException {
         switch (type) {
-            case "T":
+            case TASK_TYPE_TODO:
                 return parseTodoLine(parts, description);
-            case "D":
+            case TASK_TYPE_DEADLINE:
                 return parseDeadlineLine(parts, description);
-            case "E":
+            case TASK_TYPE_EVENT:
                 return parseEventLine(parts, description);
             default:
                 throw new DarwinException("Unknown task type in file: " + type);
@@ -157,7 +196,7 @@ public class Storage {
      * @throws DarwinException If the line doesn't have exactly 3 parts.
      */
     private Task parseTodoLine(String[] parts, String description) throws DarwinException {
-        if (parts.length != 3) {
+        if (parts.length != TODO_PARTS_LENGTH) {
             throw new DarwinException("Invalid todo format in file");
         }
         return new ToDo(description);
@@ -172,11 +211,11 @@ public class Storage {
      * @throws DarwinException If the line doesn't have exactly 4 parts or the date is invalid.
      */
     private Task parseDeadlineLine(String[] parts, String description) throws DarwinException {
-        if (parts.length != 4) {
+        if (parts.length != DEADLINE_PARTS_LENGTH) {
             throw new DarwinException("Invalid deadline format in file");
         }
 
-        String dateString = parts[3].trim();
+        String dateString = parts[INDEX_DEADLINE_DATE].trim();
         return new Deadline(description, dateString);
     }
 
@@ -189,12 +228,12 @@ public class Storage {
      * @throws DarwinException If the line doesn't have exactly 5 parts or the dates are invalid.
      */
     private Task parseEventLine(String[] parts, String description) throws DarwinException {
-        if (parts.length != 5) {
+        if (parts.length != EVENT_PARTS_LENGTH) {
             throw new DarwinException("Invalid event format in file");
         }
 
-        String from = parts[3].trim();
-        String to = parts[4].trim();
+        String from = parts[INDEX_EVENT_FROM].trim();
+        String to = parts[INDEX_EVENT_TO].trim();
         return new Event(description, from, to);
     }
 }
