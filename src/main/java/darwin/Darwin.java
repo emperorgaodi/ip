@@ -80,7 +80,7 @@ public class Darwin {
             String response = responseBuilder.toString().trim();
 
             if (c.isExit()) {
-                // For GUI, you can just close the window
+                // For GUI, you can just close the window or exit with a message
                 response += "Bye. Hope to see you again soon!\n" +
                         "[Darwin will now close...]";
             }
