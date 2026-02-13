@@ -101,8 +101,8 @@ public class Parser {
     }
 
     private static String extractFindKeyword(String input) {
-        return input.substring(FIND_COMMAND_MIN_LENGTH).trim();
         assert input.length() > 5 : "Find command cannot have no arguments";
+        return input.substring(FIND_COMMAND_MIN_LENGTH).trim();
     }
 
     private static void validateFindKeyword(String keyword) throws DarwinException {
@@ -144,8 +144,8 @@ public class Parser {
     private static int parseTaskNumber(String[] parts, String input) throws DarwinException {
         try {
             int taskNumber = Integer.parseInt(parts[TASK_NUMBER_INDEX]);
-            return taskNumber;
             assert taskNumber > 0 : "Task number should be positive, but got: " + taskNumber;
+            return taskNumber;
         } catch (NumberFormatException e) {
             String command = extractCommandName(input);
             throw new DarwinException(" Please provide a valid task number after '" + command + "'.");
@@ -227,15 +227,15 @@ public class Parser {
     }
 
     private static String extractDeadlineDescription(String[] parts) {
-        return parts[DESCRIPTION_PART_INDEX].trim();
-
         assert parts[DESCRIPTION_PART_INDEX] != null : "Description cannot be null after parsing";
+
+        return parts[DESCRIPTION_PART_INDEX].trim();
     }
 
     private static String extractDeadlineDate(String[] parts) {
-        return parts[DATE_PART_INDEX].trim();
-
         assert parts[DATE_PART_INDEX] != null : "Date cannot be null after parsing";
+
+        return parts[DATE_PART_INDEX].trim();
     }
 
     private static void validateDeadlineComponents(String description, String by)

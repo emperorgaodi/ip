@@ -199,7 +199,6 @@ public class Storage {
         String description = extractDescription(parts);
 
         assert type != null;
-        assert isDone != null;
         assert description != null;
 
         Task task = parseTaskByType(type, parts, description);
