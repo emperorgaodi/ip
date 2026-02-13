@@ -64,6 +64,9 @@ public class MainWindow extends AnchorPane {
         if (response.contains("Bye. Hope to see you again soon!")) {
             handleExit();
         }
+
+      // autoscroll downwards after the new message bubbles have been added
+      Platform.runLater(() -> scrollPane.setVvalue(1.0));
     }
 
     private void handleExit() {

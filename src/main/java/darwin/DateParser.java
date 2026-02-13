@@ -22,8 +22,14 @@ public class DateParser {
      * @throws DarwinException If the date string is not in the expected yyyy-mm-dd format.
      */
     public static LocalDate parseDate(String dateString) throws DarwinException {
+        assert dateString != null : "Date string cannot be null";
+
         try {
-            return LocalDate.parse(dateString.trim()); // uses yyyy-mm-dd
+            LocalDate parsedDate = LocalDate.parse(dateString.trim());
+
+            assert parsedDate != null : "Parsed date should not be null";
+
+            return parsedDate; // uses yyyy-mm-dd
         } catch (DateTimeParseException e) {
             throw new DarwinException(" Invalid date format. Please use yyyy-mm-dd (e.g., 2019-12-02)");
         }
@@ -40,6 +46,14 @@ public class DateParser {
         if (date == null) {
             return null;
         }
-        return date.format(DATE_FORMATTER);
+
+        String formatted = date.format(DATE_FORMATTER);
+
+        assert formatted != null : "Formatted date should not be null";
+        assert !formatted.trim().isEmpty() : "Formatted date should not be empty";
+        assert formatted.matches("[A-Z][a-z]{2} \\d{2} \\d{4}") :
+                "Date should be in format 'MMM dd yyyy', but was: " + formatted;
+
+        return formatted;
     }
 }

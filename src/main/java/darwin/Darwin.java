@@ -1,9 +1,11 @@
 package darwin;
 
+import java.util.ArrayList;
 import darwin.command.Command;
 import darwin.parser.Parser;
 import darwin.storage.Storage;
 import darwin.task.TaskList;
+import darwin.task.Task;
 import darwin.ui.Ui;
 
 /**
@@ -26,13 +28,27 @@ public class Darwin {
      * @param filePath The file path where tasks are persistently stored and loaded from.
      */
     public Darwin(String filePath) {
+        assert filePath != null : "File path cannot be null";
+
         ui = new Ui();
+        assert ui != null : "UI component should be initialized";
+
         storage = new Storage(filePath); // load tasks from file
+        assert storage != null : "Storage component should be initialized";
+
         try {
-            tasks = new TaskList(storage.loadTasks());
+            ArrayList<Task> loadedTasks = storage.loadTasks();
+            assert loadedTasks != null : "loadTasks() should never return null";
+
+            tasks = new TaskList(loadedTasks);
+
+            assert tasks != null : "TaskList should be initialized";
         } catch (DarwinException e) {
             ui.printError("Error loading tasks: " + e.getMessage());
             tasks = new TaskList();
+
+            assert tasks != null : "TaskList should be initialized even on error";
+            assert tasks.getTaskCount() == 0 : "New TaskList should be empty";
         }
     }
 
@@ -47,6 +63,11 @@ public class Darwin {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
+        assert input != null : "Input cannot be null";
+        assert ui != null : "UI component must be initialized";
+        assert tasks != null : "TaskList must be initialized";
+        assert storage != null : "Storage must be initialized";
+
         try {
             setupResponseBuilder();
             Command command = parseCommand(input);

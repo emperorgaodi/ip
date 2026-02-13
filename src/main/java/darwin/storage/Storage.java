@@ -53,6 +53,9 @@ public class Storage {
      *                 The file is created if it doesn't exist.
      */
     public Storage(String filePath) {
+        assert filePath != null : "File path cannot be null";
+        assert !filePath.trim().isEmpty() : "File path cannot be empty";
+
         this.filePath = filePath;
     }
 
@@ -91,7 +94,6 @@ public class Storage {
 
         return tasks;
     }
-
 
     private void addTaskIfValid(String line, ArrayList<Task> tasks) {
         Task task = parseLine(line);

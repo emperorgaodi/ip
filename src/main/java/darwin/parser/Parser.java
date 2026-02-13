@@ -79,12 +79,14 @@ public class Parser {
         } else if (input.startsWith(COMMAND_DELETE)) {
             return parseDeleteCommand(input);
         } else {
-            throw new DarwinException(" Unknown command :( Please use: todo, deadline, event, list, " +
+            throw new DarwinException("Unknown command :( Please use: todo, deadline, event, list, " +
                     "mark, unmark, delete, find or bye");
         }
     }
 
     private static Command parseFindCommand(String input) throws DarwinException {
+        assert input != null : "Input string cannot be null";
+
         validateFindCommandLength(input);
         String keyword = extractFindKeyword(input);
         validateFindKeyword(keyword);
@@ -100,6 +102,7 @@ public class Parser {
 
     private static String extractFindKeyword(String input) {
         return input.substring(FIND_COMMAND_MIN_LENGTH).trim();
+        assert input.length() > 5 : "Find command cannot have no arguments";
     }
 
     private static void validateFindKeyword(String keyword) throws DarwinException {
@@ -121,6 +124,8 @@ public class Parser {
 
     // parseMarkCommand & parseUnmarkCommand helpers - START
     private static int extractTaskNumber(String input) throws DarwinException {
+        assert input.length() > 5 : "Find command cannot have no arguments";
+
         String[] parts = splitByWhitespace(input);
         validateHasTaskNumber(parts);
         return parseTaskNumber(parts, input);
@@ -138,7 +143,9 @@ public class Parser {
 
     private static int parseTaskNumber(String[] parts, String input) throws DarwinException {
         try {
-            return Integer.parseInt(parts[TASK_NUMBER_INDEX]);
+            int taskNumber = Integer.parseInt(parts[TASK_NUMBER_INDEX]);
+            return taskNumber;
+            assert taskNumber > 0 : "Task number should be positive, but got: " + taskNumber;
         } catch (NumberFormatException e) {
             String command = extractCommandName(input);
             throw new DarwinException(" Please provide a valid task number after '" + command + "'.");
@@ -160,12 +167,16 @@ public class Parser {
 
     // parseTodoCommand helpers - START
     private static void validateTodoCommandLength(String input) throws DarwinException {
+        assert input != null : "Input string cannot be null";
+
         if (input.length() <= TODO_COMMAND_MIN_LENGTH) {
             throw new DarwinException(" Please use this format 'todo <description>'!");
         }
     }
 
     private static String extractTodoDescription(String input) {
+        assert input.length() > 5 : "Todo command cannot have no arguments";
+
         return input.substring(TODO_COMMAND_MIN_LENGTH).trim();
     }
 
@@ -192,12 +203,16 @@ public class Parser {
 
     // parseDeadlineCommand helpers - START
     private static void validateDeadlineCommandLength(String input) throws DarwinException {
+        assert input != null : "Input string cannot be null";
+
         if (input.length() <= DEADLINE_COMMAND_MIN_LENGTH) {
             throw new DarwinException(" Please use this format 'deadline <description> /by yyyy-mm-dd'!");
         }
     }
 
     private static String extractDeadlineContent(String input) {
+        assert input.length() > 9 : "Deadline command cannot have no arguments";
+
         return input.substring(DEADLINE_COMMAND_MIN_LENGTH).trim();
     }
 
@@ -213,10 +228,14 @@ public class Parser {
 
     private static String extractDeadlineDescription(String[] parts) {
         return parts[DESCRIPTION_PART_INDEX].trim();
+
+        assert parts[DESCRIPTION_PART_INDEX] != null : "Description cannot be null after parsing";
     }
 
     private static String extractDeadlineDate(String[] parts) {
         return parts[DATE_PART_INDEX].trim();
+
+        assert parts[DATE_PART_INDEX] != null : "Date cannot be null after parsing";
     }
 
     private static void validateDeadlineComponents(String description, String by)
@@ -248,6 +267,8 @@ public class Parser {
 
     // parseEventCommand helpers - START
     private static void validateEventCommandLength(String input) throws DarwinException {
+        assert input != null : "Input string cannot be null";
+
         if (input.length() <= EVENT_COMMAND_MIN_LENGTH) {
             throw new DarwinException(" Please use this format: event <description> /from yyyy-mm-dd " +
                     "/to yyyy-mm-dd!");
@@ -255,6 +276,8 @@ public class Parser {
     }
 
     private static String extractEventContent(String input) {
+        assert input.length() > 6 : "Event command cannot have no arguments";
+
         return input.substring(EVENT_COMMAND_MIN_LENGTH).trim();
     }
 
