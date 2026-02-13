@@ -71,7 +71,7 @@ public class Storage {
         return readTasksFromFile();
     }
 
-    // helper functions for load tasks - start
+    //loadTasks helper - START
     private boolean isFileExists() {
         File file = new File(filePath);
         return file.exists();
@@ -92,6 +92,7 @@ public class Storage {
         return tasks;
     }
 
+
     private void addTaskIfValid(String line, ArrayList<Task> tasks) {
         Task task = parseLine(line);
         if (isTaskValid(task)) {
@@ -102,7 +103,7 @@ public class Storage {
     private boolean isTaskValid(Task task) {
         return task != null;
     }
-    // helper functions for load tasks - end
+    //loadTasks helper - END
 
     /**
      * Saves the current list of tasks to the storage file. Creates the data directory
@@ -111,22 +112,37 @@ public class Storage {
      * @param tasks The ArrayList of tasks to be saved to the file.
      */
     public void saveTasks(ArrayList<Task> tasks) {
-        try {
-            // Create data directory if it does not exist
-            File dataDir = new File(DATA_DIRECTORY);
-            if (!dataDir.exists()) {
-                dataDir.mkdir();
-            }
+        if (!createDataDirectoryIfNotExists()) {
+            return;
+        }
 
-            FileWriter writer = new FileWriter(filePath);
+        writeTasksToFile(tasks);
+    }
+
+    // saveTasks helpers - START
+    private boolean createDataDirectoryIfNotExists() {
+        File dataDir = new File(DATA_DIRECTORY);
+        if (!dataDir.exists()) {
+            return dataDir.mkdir();
+        }
+        return true;
+    }
+
+    private void writeTasksToFile(ArrayList<Task> tasks) {
+        try (FileWriter writer = new FileWriter(filePath)) {
             for (Task task : tasks) {
-                writer.write(task.toFileFormat() + "\n");
+                writeTaskToFile(writer, task);
             }
-            writer.close();
         } catch (IOException e) {
             System.out.println("Error saving tasks: " + e.getMessage());
         }
     }
+
+    private void writeTaskToFile(FileWriter writer, Task task) throws IOException {
+        String fileFormat = task.toFileFormat();
+        writer.write(fileFormat + "\n");
+    }
+    // saveTasks helpers - END
 
     /**
      * Parses a single line from the storage file into a Task object.
@@ -136,25 +152,18 @@ public class Storage {
      * @return A Task object parsed from the line, or null if the line is invalid.
      */
     private Task parseLine(String line) {
+        if (!isLineValid(line)) {
+            return null;
+        }
+
         try {
-            String[] parts = line.split(DELIMITER);
+            String[] parts = splitLineIntoParts(line);
 
-            if (parts.length < SHORTEST_POSIBLE_TASK_LENGTH) {
-                System.out.println("Warning: Skipping invalid line: " + line);
-                return null; // skip invalid lines
+            if (!hasMinimumRequiredParts(parts)) {
+                return null;
             }
 
-            String type = parts[INDEX_TYPE].trim();
-            boolean isDone = parts[INDEX_STATUS].trim().equals(STATUS_DONE);
-            String description = parts[INDEX_DESCRIPTION].trim();
-
-            Task task = parseTaskByType(type, parts, description);
-
-            if (task != null && isDone) {
-                task.markAsDone();
-            }
-
-            return task;
+            return createTaskFromParts(parts);
 
         } catch (DarwinException e) {
             System.out.println("Warning: Skipping task - " + e.getMessage());
@@ -164,6 +173,58 @@ public class Storage {
             return null;
         }
     }
+
+    // parseLine helper - START
+    private boolean isLineValid(String line) {
+        return line != null && !line.trim().isEmpty();
+    }
+
+    private String[] splitLineIntoParts(String line) {
+        return line.split(DELIMITER);
+    }
+
+    private boolean hasMinimumRequiredParts(String[] parts) {
+        if (parts.length < SHORTEST_POSIBLE_TASK_LENGTH) {
+            System.out.println("Warning: Skipping invalid line: " + String.join("|", parts));
+            return false;
+        }
+        return true;
+    }
+
+    private Task createTaskFromParts(String[] parts) throws DarwinException {
+        String type = extractTaskType(parts);
+        boolean isDone = extractTaskStatus(parts);
+        String description = extractDescription(parts);
+
+        assert type != null;
+        assert isDone != null;
+        assert description != null;
+
+        Task task = parseTaskByType(type, parts, description);
+
+        markTaskStatusIfDone(task, isDone);
+
+        return task;
+    }
+
+    private String extractTaskType(String[] parts) {
+        return parts[INDEX_TYPE].trim();
+    }
+
+    private boolean extractTaskStatus(String[] parts) {
+        return parts[INDEX_STATUS].trim().equals(STATUS_DONE);
+    }
+
+    private String extractDescription(String[] parts) {
+        return parts[INDEX_DESCRIPTION].trim();
+    }
+
+    private void markTaskStatusIfDone(Task task, boolean isDone) {
+        if (task != null && isDone) {
+            task.markAsDone();
+        }
+    }
+    // parseLine helper - END
 
     /**
      * Routes parsing to the appropriate task type parser based on the type code.

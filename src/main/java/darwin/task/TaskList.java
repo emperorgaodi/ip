@@ -68,7 +68,8 @@ public class TaskList {
         String searchTerm = keyword.toLowerCase();
 
         for (Task task : tasks) {
-            if (task.getDescription().toLowerCase().contains(searchTerm)) {
+            boolean isMatch = taskContainsKeyword(task, searchTerm);
+            if (isMatch) {
                 matchingTasks.add(task);
             }
         }
@@ -76,13 +77,18 @@ public class TaskList {
         return matchingTasks;
     }
 
-        /**
-         * Marks or unmarks a task at the specified position as done or not done.
-         *
-         * @param taskNumber The position of the task to mark (starting from 1).
-         * @param isDone true to mark the task as done, false to mark it as not done.
-         * @throws DarwinException If the task number is invalid (out of bounds).
-         */
+    private boolean taskContainsKeyword(Task task, String searchTerm) {
+        String taskDescription = task.getDescription().toLowerCase();
+        return taskDescription.contains(searchTerm);
+    }
+
+    /**
+     * Marks or unmarks a task at the specified position as done or not done.
+     *
+     * @param taskNumber The position of the task to mark (starting from 1).
+     * @param isDone true to mark the task as done, false to mark it as not done.
+     * @throws DarwinException If the task number is invalid (out of bounds).
+     */
     public void markTask(int taskNumber, boolean isDone) throws DarwinException {
         if (!isValidTaskNumber(taskNumber)) {
             throw new DarwinException("Invalid task number.");

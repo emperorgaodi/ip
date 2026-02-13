@@ -35,44 +35,6 @@ public class Darwin {
             tasks = new TaskList();
         }
     }
-//
-//    /**
-//     * Starts and runs the main application loop. Continuously reads user commands,
-//     * parses them, executes the corresponding actions, and displays results until
-//     * an exit command is received.
-//     */
-//    public void run() { // not used for GUI, kept for legacy usage
-//        ui.printGreeting();
-//
-//        boolean isExit = false;
-//        while (!isExit) {
-//            try {
-//                String fullCommand = ui.readCommand();
-//                ui.printLine();
-//                Command c = Parser.parse(fullCommand);
-//                c.execute(tasks, ui, storage);
-//                storage.saveTasks(tasks.getTasks());
-//                isExit = c.isExit();
-//            } catch (DarwinException e) {
-//                ui.printError(e.getMessage());
-//            } finally {
-//                ui.printLine();
-//            }
-//        }
-//
-//        ui.printGoodbye();
-//        ui.close();
-//    }
-//
-//    /**
-//     * The main entry point for the Darwin task management application.
-//     * Creates a new Darwin instance and starts the application.
-//     *
-//     * @param args Command line arguments.
-//     */
-//    public static void main(String[] args) {
-//        new Darwin(FILE_PATH).run();
-//    }
 
     public String getGreeting() {
         StringBuilder greetingBuilder = new StringBuilder();
@@ -86,27 +48,45 @@ public class Darwin {
      */
     public String getResponse(String input) {
         try {
-            StringBuilder responseBuilder = new StringBuilder();
-            ui.clearResponse(); // clear any previous content
-            ui.setResponseBuilder(responseBuilder); // set new ResponseBuilder
+            setupResponseBuilder();
+            Command command = parseCommand(input);
+            executeCommand(command);
+            saveTasks();
 
-            Command c = Parser.parse(input);
-            c.execute(tasks, ui, storage);
-            storage.saveTasks(tasks.getTasks());
-
-            String response = responseBuilder.toString().trim();
-
-            if (c.isExit()) {
-                // For GUI, you can just close the window
-                // Or return a special message
-                response += "Bye. Hope to see you again soon!\n" +
-                        "[Darwin will now close...]";
-            }
-
+            String response = buildResponse(command);  // Use buildResponse method
             return response;
-
         } catch (DarwinException e) {
             return e.getMessage();
         }
     }
+
+    // getResponse helper - START
+    private void setupResponseBuilder() {
+        StringBuilder responseBuilder = new StringBuilder();
+        ui.clearResponse();
+        ui.setResponseBuilder(responseBuilder);
+    }
+
+    private Command parseCommand(String input) throws DarwinException {
+        return Parser.parse(input);
+    }
+
+    private void executeCommand(Command command) throws DarwinException {
+        command.execute(tasks, ui, storage);
+    }
+
+    private void saveTasks() {
+        storage.saveTasks(tasks.getTasks());
+    }
+
+    private String buildResponse(Command command) {
+        String response = ui.getResponseBuilder().toString().trim();
+
+        if (command.isExit()) {
+            response += "Bye. Hope to see you again soon!\n[Darwin will now close...]";
+        }
+
+        return response;
+    }
+    // getResponse helper - END
 }
