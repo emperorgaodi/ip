@@ -69,26 +69,45 @@ public class Darwin {
         assert storage != null : "Storage must be initialized";
 
         try {
-            StringBuilder responseBuilder = new StringBuilder();
-            ui.clearResponse(); // clear any previous content
-            ui.setResponseBuilder(responseBuilder); // set new ResponseBuilder
+            setupResponseBuilder();
+            Command command = parseCommand(input);
+            executeCommand(command);
+            saveTasks();
 
-            Command c = Parser.parse(input);
-            c.execute(tasks, ui, storage);
-            storage.saveTasks(tasks.getTasks());
-
-            String response = responseBuilder.toString().trim();
-
-            if (c.isExit()) {
-                // For GUI, you can just close the window
-                response += "Bye. Hope to see you again soon!\n" +
-                        "[Darwin will now close...]";
-            }
-
+            String response = buildResponse(command);  // Use buildResponse method
             return response;
-
         } catch (DarwinException e) {
             return e.getMessage();
         }
     }
+
+    // getResponse helper - START
+    private void setupResponseBuilder() {
+        StringBuilder responseBuilder = new StringBuilder();
+        ui.clearResponse();
+        ui.setResponseBuilder(responseBuilder);
+    }
+
+    private Command parseCommand(String input) throws DarwinException {
+        return Parser.parse(input);
+    }
+
+    private void executeCommand(Command command) throws DarwinException {
+        command.execute(tasks, ui, storage);
+    }
+
+    private void saveTasks() {
+        storage.saveTasks(tasks.getTasks());
+    }
+
+    private String buildResponse(Command command) {
+        String response = ui.getResponseBuilder().toString().trim();
+
+        if (command.isExit()) {
+            response += "Bye. Hope to see you again soon!\n[Darwin will now close...]";
+        }
+
+        return response;
+    }
+    // getResponse helper - END
 }

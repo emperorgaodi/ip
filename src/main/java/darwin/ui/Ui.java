@@ -3,22 +3,23 @@ package darwin.ui;
 import darwin.task.Task;
 
 import java.util.ArrayList;
-import java.util.Scanner; // not used for GUI, kept for legacy usage
 
 public class Ui {
 
     private static final String HORIZONTAL_LINE = "____________________________________________________________";
-    private final Scanner scanner; // not used for GUI, kept for legacy usage
 
     private StringBuilder responseBuilder; // for GUI mode
 
     public Ui() {
-        this.scanner = new Scanner(System.in); // not used for GUI, kept for legacy usage
         this.responseBuilder = new StringBuilder();
     }
 
     public void setResponseBuilder(StringBuilder responseBuilder) {
         this.responseBuilder = responseBuilder;
+    }
+
+    public StringBuilder getResponseBuilder() {
+        return responseBuilder;
     }
 
     public void clearResponse() {
@@ -39,10 +40,6 @@ public class Ui {
 
     public void printLine() {
         output(HORIZONTAL_LINE);
-    }
-
-    public String readCommand() { // not used for GUI, kept for legacy usage
-        return scanner.nextLine().trim();
     }
 
     public void printError(String errorMessage) {
@@ -98,9 +95,5 @@ public class Ui {
         if (responseBuilder != null) {
             responseBuilder.append(text).append("\n");
         }
-    }
-
-    public void close() { // not used for GUI, kept for legacy usage
-        scanner.close();
     }
 }
