@@ -81,6 +81,8 @@ public class TaskList {
      * @return An ArrayList of tasks that match the search criteria.
      */
     public ArrayList<Task> findTasks(String keyword) {
+        assert keyword != null : "Search keyword cannot be null";
+
         ArrayList<Task> matchingTasks = new ArrayList<>();
         String searchTerm = keyword.toLowerCase();
 
@@ -96,7 +98,8 @@ public class TaskList {
 
     private boolean taskContainsKeyword(Task task, String searchTerm) {
         String taskDescription = task.getDescription().toLowerCase();
-        return taskDescription.contains(searchTerm);
+        String partialTaskDescription = taskDescription.contains(searchTerm); // works for partial string matching
+        return partialTaskDescription;
     }
 
     /**
