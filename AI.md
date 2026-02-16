@@ -1,3 +1,13 @@
+### Increment: A-AiAssisted, A-Personality
+
+Prompt: Edit Ui.java to make Darwin's character more unique
+
+Response:
+I'll help you edit the phrases used by Darwin to give it a unique personality.
+Looking at your code, the phrases are primarily in the Ui.java file.
+Here's an updated version with a Professor Darwin personality -
+a knowledgeable but slightly eccentric academic:
+```java
 package darwin.ui;
 
 import darwin.task.Task;
@@ -5,6 +15,8 @@ import darwin.task.Task;
 import java.util.ArrayList;
 
 public class Ui {
+
+    private static final String HORIZONTAL_LINE = "____________________________________________________________";
 
     private StringBuilder responseBuilder; // for GUI mode
 
@@ -27,19 +39,23 @@ public class Ui {
     }
 
     public void printGreeting() {
-        String byeMessage = "Farewell, my scholarly friend! Until our next intellectual discourse.\n" +
-                "Remember: knowledge is a journey, not a destination!";
-        output(byeMessage);
+        String greeting = "Ah, good to see you! Professor Darwin at your service.\n" +
+                          "What academic pursuit shall we undertake today?";
+        output(greeting);
     }
 
     public void printGoodbye() {
         String byeMessage = "Farewell, my scholarly friend! Until our next intellectual discourse.\n" +
-                "Remember: knowledge is a journey, not a destination!";
+                            "Remember: knowledge is a journey, not a destination!";
         output(byeMessage);
     }
 
+    public void printLine() {
+        output(HORIZONTAL_LINE);
+    }
+
     public void printError(String errorMessage) {
-        output("Hmm, that doesn't quite right... " + errorMessage);
+        output("Hmm, that doesn't quite compute... " + errorMessage);
     }
 
     public void printTaskAdded(Task task, int taskCount) {
@@ -93,3 +109,6 @@ public class Ui {
         }
     }
 }
+```
+
+
