@@ -28,9 +28,9 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-
-
+        dialogContainer.heightProperty().addListener((observable, oldValue, newValue) -> {
+            scrollPane.setVvalue((Double) newValue);
+        });
     }
 
     private void showGreeting() {
@@ -65,8 +65,8 @@ public class MainWindow extends AnchorPane {
             handleExit();
         }
 
-      // autoscroll downwards after the new message bubbles have been added
-      Platform.runLater(() -> scrollPane.setVvalue(1.0));
+        // autoscroll downwards after the new message bubbles have been added
+        Platform.runLater(() -> scrollPane.setVvalue(1.0));
     }
 
     private void handleExit() {

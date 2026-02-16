@@ -4,7 +4,7 @@
     -fx-border-width: 1px;
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
-    -fx-text-fill: ladder(background, white 49%, black 50%);
+    -fx-text-fill: black;
 }
 
 /* Dialog container styling */
@@ -33,9 +33,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
 
     /* Change size of image. */
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-
-    /* Rotate image clockwise by degrees. */
-    -fx-rotate: 0;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
 }

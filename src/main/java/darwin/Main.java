@@ -22,10 +22,12 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
-            stage.setScene(scene);
 
-          stage.setMinHeight(220);
-          stage.setMinWidth(500);
+            stage.setTitle("Professor Darwin's Task Manager");
+
+            stage.setScene(scene);
+            stage.setMinHeight(220);
+            stage.setMinWidth(500);
 
             fxmlLoader.<MainWindow>getController().setDarwin(darwin);  // inject the Darwin instance
             stage.show();

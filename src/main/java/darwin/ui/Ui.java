@@ -27,9 +27,10 @@ public class Ui {
     }
 
     public void printGreeting() {
-        String byeMessage = "Farewell, my scholarly friend! Until our next intellectual discourse.\n" +
-                "Remember: knowledge is a journey, not a destination!";
-        output(byeMessage);
+        String greeting = "Ah, good to see you! Professor Darwin at your service.\n" +
+                "What academic pursuit shall we undertake today?\n" +
+                "Here are some easy commands to get you started: todo, event, deadline";
+        output(greeting);
     }
 
     public void printGoodbye() {
