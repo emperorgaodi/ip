@@ -98,7 +98,7 @@ public class TaskList {
 
     private boolean taskContainsKeyword(Task task, String searchTerm) {
         String taskDescription = task.getDescription().toLowerCase();
-        String partialTaskDescription = taskDescription.contains(searchTerm); // works for partial string matching
+        boolean partialTaskDescription = taskDescription.contains(searchTerm); // works for partial string matching
         return partialTaskDescription;
     }
 
