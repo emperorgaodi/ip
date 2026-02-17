@@ -16,7 +16,7 @@ Meet **Darwin**, a friendly chatbot meant to keep track of your tasks! It’s
 
 3. Copy the file to the folder you want to use as the home folder for your Darwin chatbot.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the 
+4. Open a command terminal, switch the directory (`cd`) into the folder you put the jar file in (eg. `cd Downloads`), and use the 
 `java -jar darwin.jar` command to run the application.<br>
 A GUI similar to the below should appear in a few seconds.
 
