@@ -56,6 +56,8 @@ Example:
 ### Adding a deadline task: `deadline`
 Adds a task with a deadline to your task list.<br>
 Format: `deadline DESCRIPTION /by DATE`<br>
+- Dates should be in the format YYYY-MM-DD.<br>
+
 Example:
 - `deadline Return book /by 2026-01-31`
 
