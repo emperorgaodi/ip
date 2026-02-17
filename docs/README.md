@@ -1,12 +1,73 @@
-# darwin.Darwin User Guide
+# Darwin's User Guide
 
-// Update the title above to match the actual product name
+---
+## Quick Start
 
-// Product screenshot goes here
+---
+1. Ensure you have Java `17` or above installed in your Computer.<br>
+**Mac users:** Ensure you have the precise JDK version prescribed 
+[here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-// Product intro goes here
+2. Download the latest `.jar` file from [here]().
 
-## Adding deadlines
+3. Copy the file to the folder you want to use as the home folder for your Darwin chatbot.
+
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the 
+`java -jar darwin.jar` command to run the application.<br>
+A GUI similar to the below should appear in a few seconds.
+
+![Darwin interface](Ui.png)
+
+---
+## Features
+- List tasks
+- Add tasks (Todos, Deadlines, Events)
+- Mark / Unmark tasks as completed 
+- Delete tasks 
+- Find tasks by keyword
+
+---
+### Viewing all tasks: `list`
+Shows a list of all tasks in your task tracker.<br>
+Format: `list`
+
+---
+### Adding a todo task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+---
+### Adding a event task: `todo`
+
+
+
 
 // Describe the action and its outcome.
 

@@ -24,7 +24,6 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
 
             stage.setTitle("Professor Darwin's Task Manager");
-
             stage.setScene(scene);
             stage.setMinHeight(220);
             stage.setMinWidth(500);
