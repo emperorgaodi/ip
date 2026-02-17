@@ -61,7 +61,8 @@ public class TaskList {
         assert taskNumber >= 1 : "Task number should be at least 1, but got: " + taskNumber;
 
         if (!isValidTaskNumber(taskNumber)) {
-            throw new DarwinException(" Task list is full! Cannot add more tasks.");
+            throw new DarwinException(" Invalid task number. Please provide a valid task number between 1 and "
+                    + tasks.size() + ".");
         }
 
         int previousSize = tasks.size();

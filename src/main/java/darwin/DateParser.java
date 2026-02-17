@@ -5,9 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Represents the main application for Darwin task manager. A <code>Darwin</code> object handles
- * the initialization of all components, manages the main application loop, and processes user commands
- * until termination.
+ * Parses and formats dates for the Darwin application. A <code>DateParser</code> object
+ * provides utility methods to convert between String representations and LocalDate objects,
+ * handling date parsing errors with appropriate user-friendly messages.
+ *
+ * Input dates must be in yyyy-mm-dd format (e.g., "2024-03-15").
+ * Display dates are formatted as MMM dd yyyy (e.g., "Mar 15 2024").
  */
 public class DateParser {
 
