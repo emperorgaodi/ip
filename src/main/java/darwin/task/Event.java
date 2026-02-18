@@ -27,6 +27,22 @@ public class Event extends Task {
         super(description);
         this.fromDate = DateParser.parseDate(from);
         this.toDate = DateParser.parseDate(to);
+
+        validateDates();
+    }
+
+    private void validateDates() throws DarwinException {
+        assert fromDate != null : "From date should not be null";
+        assert toDate != null : "To date should not be null";
+
+        if (fromDate.isAfter(toDate)) {
+            String fromDisplay = DateParser.formatDateForDisplay(fromDate);
+            String toDisplay = DateParser.formatDateForDisplay(toDate);
+            throw new DarwinException(
+                    " Invalid event dates: Start date (" + fromDisplay +
+                            ") cannot be after end date (" + toDisplay + ")."
+            );
+        }
     }
 
     /**
